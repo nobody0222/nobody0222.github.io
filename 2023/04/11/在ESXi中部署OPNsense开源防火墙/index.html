@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="John Doe">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="John Doe">
+    
+        <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="">
+    <meta name="description" content="ESXi虚拟机安装，OPNsense基础配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在ESXi中部署OPNsense开源防火墙">
+<meta property="og:url" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="ESXi虚拟机安装，OPNsense基础配置">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-0.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-1.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-2.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-3.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-4.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-5.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-6.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-7.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-8.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-9.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-10.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-11.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-12.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-13.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-14.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-15.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-16.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-17.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-18.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-19.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-20.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-21.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-22.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-23.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-24.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-25.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-26.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-27.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-28.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-29.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-30.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-31.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-32.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-33.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-34.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-35.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-36.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-37.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-38.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-39.png">
+<meta property="og:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-40.png">
+<meta property="article:published_time" content="2023-04-11T13:42:40.000Z">
+<meta property="article:modified_time" content="2023-04-11T09:59:04.834Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="家庭数据中心搭建">
+<meta property="article:tag" content="学习">
+<meta property="article:tag" content="折腾">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-0.png">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/assets/favicon.ico">
+    
+    <title>在ESXi中部署OPNsense开源防火墙 · Ahao&#39;s Studio</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20211217" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20211217" as="style">
+    <link rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" href="/css/mobile.css?v=20211217" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20211217" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20211217" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>Ahao's Studio.</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">Ahao&#39;s Studio.</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">在ESXi中部署OPNsense开源防火墙</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+    
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                在ESXi中部署OPNsense开源防火墙
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="家庭数据中心搭建">家庭数据中心搭建</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="学习">学习</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="折腾">折腾</a>
+    
+</div>
+
+                
+                <!-- 文章字数统计 -->
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2023/04/11</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="官方文档参考："><a href="#官方文档参考：" class="headerlink" title="官方文档参考："></a>官方文档参考：</h1><p><a target="_blank" rel="noopener" href="https://docs.opnsense.org/manual/virtuals.html">OPNsense官方的 Virtual &amp; Cloud based Installation  指引</a><br><a target="_blank" rel="noopener" href="https://docs.opnsense.org/manual/install.html">OPNsense官方的 详细安装指引</a>   </p>
+<h1 id="环境准备："><a href="#环境准备：" class="headerlink" title="环境准备："></a>环境准备：</h1><p>ESXi安装和基本配置可参考视频<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1k64y197T1/?spm_id_from=333.337.search-card.all.click">（B 站 科技宅小明） 内卷的路由器！ESXi iKuai openWRT USB网卡2.5Gbps</a></p>
+<ul>
+<li>本次演示使用的是ESXi 8.0版本，故界面有所不同（同学人说界面更modern了  我倒觉得没那么好看了)</li>
+</ul>
+<p>下载OPNsense  iso镜像，如图<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-0.png" alt="在ESXi中部署OPNsense开源防火墙-0"><br>文件解压得到：<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-1.png" alt="在ESXi中部署OPNsense开源防火墙-1"></p>
+<h1 id="创建虚拟机"><a href="#创建虚拟机" class="headerlink" title="创建虚拟机"></a>创建虚拟机</h1><p>新建虚拟机，设置操作系统系列为其他，版本为FreeBSD 13（64位）<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-2.png" alt="在ESXi中部署OPNsense开源防火墙-2"><br>下一步，选择opnsense安装的磁盘<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-3.png" alt="在ESXi中部署OPNsense开源防火墙-3"><br>下一步设置配置：<br>我分配了2核cpu，2G内存(预留2G)，磁盘20G精简置备，单独分一个虚拟交换机OPNsense LAN(可直接使用默认的VM Network)，直通了一个网卡<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-4.png" alt="在ESXi中部署OPNsense开源防火墙-4"><br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-5.png" alt="在ESXi中部署OPNsense开源防火墙-5"></p>
+<ul>
+<li>需要考虑后续连接web后台管理，可选择多直通一个物理网卡作为LAN口或者使用默认的VM network并在安装完成后配置LAN口IP在你的网段内</li>
+</ul>
+<p>选择CD&#x2F;DVD控制器，左上角按钮上传刚才下载的iso文件<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-6.png" alt="在ESXi中部署OPNsense开源防火墙-6"><br>上传完成后下一步，确认无误后点击完成<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-7.png" alt="在ESXi中部署OPNsense开源防火墙-7"></p>
+<h1 id="安装系统"><a href="#安装系统" class="headerlink" title="安装系统"></a>安装系统</h1><p>启动虚拟机<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-8.png" alt="在ESXi中部署OPNsense开源防火墙-8"></p>
+<h2 id="可能出现需要选择网卡："><a href="#可能出现需要选择网卡：" class="headerlink" title="可能出现需要选择网卡："></a>可能出现需要选择网卡：</h2><p>开机时不按回车默认自动识别并设置WAN 和 LAN，<br>如出现，可重启并在启动过程中不按回车<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-9.png" alt="在ESXi中部署OPNsense开源防火墙-9"><br>如自动配置错误，则需要根据提示手动配置</p>
+<h2 id="启动完直接来到登录界面"><a href="#启动完直接来到登录界面" class="headerlink" title="启动完直接来到登录界面"></a>启动完直接来到登录界面</h2><p>启动后如只显示LAN（有一个网卡无法识别），可点击编辑查看配置是否有误 或配置没保存<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-10.png" alt="在ESXi中部署OPNsense开源防火墙-10"><br>安装需要登录默认账号installer  密码opnsense<br>登录后会见到选择界面，第一个选择是键盘布局，默认即可（直接回车下一步）<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-11.png" alt="在ESXi中部署OPNsense开源防火墙-11"><br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-12.png" alt="在ESXi中部署OPNsense开源防火墙-12"></p>
+<h3 id="使用UFS"><a href="#使用UFS" class="headerlink" title="使用UFS"></a>使用UFS</h3><p>选择磁盘格式，一样保持默认，回车下一项<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-13.png" alt="在ESXi中部署OPNsense开源防火墙-13"><br>然后方向⬇选择前面创建的20G虚拟磁盘、回车下一步<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-14.png" alt="在ESXi中部署OPNsense开源防火墙-14"><br>方向键⬅选择yes，按回车提交   一般可以直接安装，如报错<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-15.png" alt="在ESXi中部署OPNsense开源防火墙-15"></p>
+<h3 id="如失败可选择ZFS"><a href="#如失败可选择ZFS" class="headerlink" title="如失败可选择ZFS"></a>如失败可选择ZFS</h3><p>可选择restart ，并在第一步选择zfs：<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-16.png" alt="在ESXi中部署OPNsense开源防火墙-16"><br>在下一步中保持默认回车（除非多盘组阵列）<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-17.png" alt="在ESXi中部署OPNsense开源防火墙-17"><br>在选择磁盘这一步中需要按下空格选择磁盘，当看到【*】时说明已选择，回车下一步<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-18.png" alt="在ESXi中部署OPNsense开源防火墙-18"><br>选择YES提交，然后可以看到安装进度条<br>安装完成后会跳转到root（最高权限账户）密码设置，按回车开始设置<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-19.png" alt="在ESXi中部署OPNsense开源防火墙-19"><br>输入两遍密码后会回到该菜单，选择下面的完成安装并重启系统<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-20.png" alt="在ESXi中部署OPNsense开源防火墙-20"><br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-21.png" alt="在ESXi中部署OPNsense开源防火墙-21"><br>重启后使用root在控制台登录成功，安装完成<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-22.png" alt="在ESXi中部署OPNsense开源防火墙-22"><br>安装成功，建议关机并拍个快照<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-23.png" alt="在ESXi中部署OPNsense开源防火墙-23"><br>后续可以直接还原状态<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-24.png" alt="在ESXi中部署OPNsense开源防火墙-24"></p>
+<h1 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h1><p>选择语言简体中文，按需配置dns<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-25.png" alt="在ESXi中部署OPNsense开源防火墙-25"><br>选择时区为香港<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-26.png" alt="在ESXi中部署OPNsense开源防火墙-26"><br>如已修改光猫为桥接模式且需要使用防火墙拨号：在这一步设置连接方式pppoe并输入运营商提供的上网账号，<br>否则保持默认dhcp即可<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-27.png" alt="在ESXi中部署OPNsense开源防火墙-27"><br>设置ip为你的网段内，（注意不要与网关冲突）<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-28.png" alt="在ESXi中部署OPNsense开源防火墙-28"><br>后续按需配置，完成后会重定向到主页面<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-29.png" alt="在ESXi中部署OPNsense开源防火墙-29"><br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-30.png" alt="在ESXi中部署OPNsense开源防火墙-30"></p>
+<h2 id="PPPOE接口"><a href="#PPPOE接口" class="headerlink" title="PPPOE接口"></a>PPPOE接口</h2><p>如遇到WAN口一直显示down，可查看接口分配看下pppoe是否分配错误，根据mac改回对应的网卡即可正常拨号<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-31.png" alt="在ESXi中部署OPNsense开源防火墙-31"></p>
+<h2 id="配置-IPv6"><a href="#配置-IPv6" class="headerlink" title="配置 IPv6"></a>配置 IPv6</h2><p> 在 接口 -&gt; [WAN] 中，配置：<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-32.png" alt="在ESXi中部署OPNsense开源防火墙-32"><br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-33.png" alt="在ESXi中部署OPNsense开源防火墙-33"><br>配置完成后如支持ipv6可在接口  -&gt; 概况看到分配的地址<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-34.png" alt="在ESXi中部署OPNsense开源防火墙-34"><br>配置完成后来到接口 -&gt;LAN，设置ipv6配置类型为跟踪接口<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-35.png" alt="在ESXi中部署OPNsense开源防火墙-35"><br>并在同一页面最下面找到跟踪ipv6接口，选择WAN口<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-36.png" alt="在ESXi中部署OPNsense开源防火墙-36"><br>（记得每次更改完设置后都到回到页面顶端右上角应用更改<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-37.png" alt="在ESXi中部署OPNsense开源防火墙-37"></p>
+<p>后续配置了加密dns分流 自动防dns污染，实现支持深度数据包入侵检测<br>然后下个游戏发现我的千兆下行变成了。。。<br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-38.png" alt="在ESXi中部署OPNsense开源防火墙-38"><br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-39.png" alt="在ESXi中部署OPNsense开源防火墙-39"><br><img src="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99-40.png" alt="在ESXi中部署OPNsense开源防火墙-40"><br>变成了更为安全的五百兆下行！（确信）</p>
+<p>—–截至发稿时间，opnsense已备注好信息封存，期待升级硬件重新启用（也可能直接上成品的机架式防火墙了。。）</p>
+
+    </article>
+    <!-- license -->
+    
+        <div class="license-wrapper">
+            <p>Author：<a href="https://blog.ahao.space">John Doe</a>
+            <p>Link：<a href="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/">https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/</a>
+            <p>Publish date：<a href="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/">April 11th 2023, 9:42:40 pm</a>
+            <p>Update date：<a href="https://blog.ahao.space/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/">April 11th 2023, 5:59:04 pm</a>
+            <p>License：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2023/04/11/%E7%BA%A2%E8%8C%B6%E4%B8%89%E6%9D%AFCCNA/" title="红茶三杯CCNA">
+                    <div class="prevTitle">红茶三杯CCNA</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+
+            
+
+        </div>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+            
+                <a href="mailto:admin@ahao.space" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/fi3ework" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                    
+                    <img class="profile-qr" src="/assets/example_qr.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%8F%82%E8%80%83%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">官方文档参考：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">环境准备：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="toc-number">3.</span> <span class="toc-text">创建虚拟机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E7%B3%BB%E7%BB%9F"><span class="toc-number">4.</span> <span class="toc-text">安装系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E8%83%BD%E5%87%BA%E7%8E%B0%E9%9C%80%E8%A6%81%E9%80%89%E6%8B%A9%E7%BD%91%E5%8D%A1%EF%BC%9A"><span class="toc-number">4.1.</span> <span class="toc-text">可能出现需要选择网卡：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%8C%E7%9B%B4%E6%8E%A5%E6%9D%A5%E5%88%B0%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2"><span class="toc-number">4.2.</span> <span class="toc-text">启动完直接来到登录界面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8UFS"><span class="toc-number">4.2.1.</span> <span class="toc-text">使用UFS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E5%A4%B1%E8%B4%A5%E5%8F%AF%E9%80%89%E6%8B%A9ZFS"><span class="toc-number">4.2.2.</span> <span class="toc-text">如失败可选择ZFS</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE"><span class="toc-number">5.</span> <span class="toc-text">基本配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PPPOE%E6%8E%A5%E5%8F%A3"><span class="toc-number">5.1.</span> <span class="toc-text">PPPOE接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-IPv6"><span class="toc-number">5.2.</span> <span class="toc-text">配置 IPv6</span></a></li></ol></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 4
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2023 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span>
+            <a class="archive-post-title" href="/2023/04/11/%E5%9C%A8ESXi%E4%B8%AD%E9%83%A8%E7%BD%B2OPNsense%E5%BC%80%E6%BA%90%E9%98%B2%E7%81%AB%E5%A2%99/">在ESXi中部署OPNsense开源防火墙</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span>
+            <a class="archive-post-title" href="/2023/04/11/%E7%BA%A2%E8%8C%B6%E4%B8%89%E6%9D%AFCCNA/">红茶三杯CCNA</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/15</span>
+            <a class="archive-post-title" href="/2023/03/15/test/">test</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/15</span>
+            <a class="archive-post-title" href="/2023/03/15/hello-world/">Hello World</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="家庭数据中心搭建">
+                <span class="iconfont-archer">&#xe606;</span>
+                家庭数据中心搭建
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="学习">
+                <span class="iconfont-archer">&#xe606;</span>
+                学习
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="折腾">
+                <span class="iconfont-archer">&#xe606;</span>
+                折腾
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="计算机网络基础">
+                <span class="iconfont-archer">&#xe606;</span>
+                计算机网络基础
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="Site01">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Site01
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="网络搭建">
+            <span class="iconfont-archer">&#xe60a;</span>
+            网络搭建
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "https://blog.ahao.space",
+        root: siteMetaRoot,
+        author: "John Doe"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20211217"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20211217"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20211217" async></script>
+        
+        <!-- mermaid -->
+        
+    </body>
+</html>
