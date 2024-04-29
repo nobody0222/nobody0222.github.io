@@ -19,24 +19,25 @@
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     
     <meta name="description" content="">
-    <meta name="description" content="（手动安装完才发现，其实都可以从微软应用商店下载） 最终效果安装必要组件Oh-My-Posh 简介| Oh My Posh 直接从微软应用商店搜索并下载安装   Windows Terminal微软开发的一个现代终端软件，用来替代老旧的控制台终端。Windows Terminal 的特点是颜值高，而且已经是 Windows 11 的默认终端了，如果你还在使用 Windows 10，也可以在应用商店">
+    <meta name="description" content="（手动安装完才发现，其实都可以从微软应用商店下载） 最终效果 安装必要组件Oh-My-Posh 简介| Oh My Posh 直接从微软应用商店搜索并下载安装  Windows Terminal微软开发的一个现代终端软件，用来替代老旧的控制台终端。Windows Terminal 的特点是颜值高，而且已经是 Windows 11 的默认终端了，如果你还在使用 Windows 10，也可以在应用商店">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用Oh-My-Posh配置和美化PowerShell终端">
-<meta property="og:url" content="https://blog.ahao.space/2023/04/16/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/index.html">
+<meta property="og:url" content="https://blog.ahao.space/2024/04/29/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="（手动安装完才发现，其实都可以从微软应用商店下载） 最终效果安装必要组件Oh-My-Posh 简介| Oh My Posh 直接从微软应用商店搜索并下载安装   Windows Terminal微软开发的一个现代终端软件，用来替代老旧的控制台终端。Windows Terminal 的特点是颜值高，而且已经是 Windows 11 的默认终端了，如果你还在使用 Windows 10，也可以在应用商店">
+<meta property="og:description" content="（手动安装完才发现，其实都可以从微软应用商店下载） 最终效果 安装必要组件Oh-My-Posh 简介| Oh My Posh 直接从微软应用商店搜索并下载安装  Windows Terminal微软开发的一个现代终端软件，用来替代老旧的控制台终端。Windows Terminal 的特点是颜值高，而且已经是 Windows 11 的默认终端了，如果你还在使用 Windows 10，也可以在应用商店">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.ahao.space/2024/04/29/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/%E6%95%88%E6%9E%9C%E6%BC%94%E7%A4%BA.gif">
 <meta property="og:image" content="https://ohmyposh.dev/assets/images/winstore-efdb3aaf75cf0992c25b5fde7c3f8ed7.png">
-<meta property="og:image" content="https://blog.ahao.space/2023/04/16/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/image-202404160810493.png">
-<meta property="og:image" content="https://blog.ahao.space/2023/04/16/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/image-202404160812036.png">
-<meta property="og:image" content="https://blog.ahao.space/2023/04/16/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/image-202404151452126.png">
-<meta property="og:image" content="https://blog.ahao.space/2023/04/16/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/%E9%85%8D%E7%BD%AE%E6%BC%94%E7%A4%BA.gif">
-<meta property="article:published_time" content="2023-04-15T23:42:40.000Z">
-<meta property="article:modified_time" content="2024-04-29T10:42:58.956Z">
+<meta property="og:image" content="https://blog.ahao.space/2024/04/29/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/image-202404160810493.png">
+<meta property="og:image" content="https://blog.ahao.space/2024/04/29/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/image-202404160812036.png">
+<meta property="og:image" content="https://blog.ahao.space/2024/04/29/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/image-202404151452126.png">
+<meta property="og:image" content="https://blog.ahao.space/2024/04/29/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/%E9%85%8D%E7%BD%AE%E6%BC%94%E7%A4%BA.gif">
+<meta property="article:published_time" content="2024-04-28T23:42:40.000Z">
+<meta property="article:modified_time" content="2024-04-29T12:05:29.806Z">
 <meta property="article:author" content="Ahao">
 <meta property="article:tag" content="JustForFun">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://ohmyposh.dev/assets/images/winstore-efdb3aaf75cf0992c25b5fde7c3f8ed7.png">
+<meta name="twitter:image" content="https://blog.ahao.space/2024/04/29/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/%E6%95%88%E6%9E%9C%E6%BC%94%E7%A4%BA.gif">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/favicon.ico">
@@ -343,7 +344,7 @@
                 <div class="post-intro-meta">
                     <!-- 撰写日期 -->
                     <span class="iconfont-archer post-intro-calander">&#xe676;</span>
-                    <span class="post-intro-time">2023/04/16</span>
+                    <span class="post-intro-time">2024/04/29</span>
                     <!-- busuanzi -->
                     
                         <span id="busuanzi_container_page_pv" class="busuanzi-pv">
@@ -499,23 +500,23 @@
                 <main class="main post-page">
     <article class="article-entry">
         <p>（手动安装完才发现，其实都可以从微软应用商店下载）</p>
-<h1 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h1><h1 id="安装必要组件"><a href="#安装必要组件" class="headerlink" title="安装必要组件"></a>安装必要组件</h1><h2 id="Oh-My-Posh"><a href="#Oh-My-Posh" class="headerlink" title="Oh-My-Posh"></a>Oh-My-Posh</h2><ul>
+<h1 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h1><p><img src="/2024/04/29/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/%E6%95%88%E6%9E%9C%E6%BC%94%E7%A4%BA.gif"></p>
+<h1 id="安装必要组件"><a href="#安装必要组件" class="headerlink" title="安装必要组件"></a>安装必要组件</h1><h2 id="Oh-My-Posh"><a href="#Oh-My-Posh" class="headerlink" title="Oh-My-Posh"></a>Oh-My-Posh</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://ohmyposh.dev/docs/">简介| Oh My Posh</a></li>
-<li>直接从微软应用商店搜索并下载安装<br><a href="[ms-windows-store://pdp/?productid=XP8K0HKJFRXGCK](ms-windows-store://pdp/?productid=XP8K0HKJFRXGCK)" target="_blank"><img src="https://ohmyposh.dev/assets/images/winstore-efdb3aaf75cf0992c25b5fde7c3f8ed7.png" alt="Windows Store Link" class="winstore" width = 200 height = 72></a></li>
+<li>直接从微软应用商店搜索并下载安装<br><a href="[ms-windows-store://pdp/?productid=XP8K0HKJFRXGCK](ms-windows-store://pdp/?productid=XP8K0HKJFRXGCK)" target="_blank"><img src="https://ohmyposh.dev/assets/images/winstore-efdb3aaf75cf0992c25b5fde7c3f8ed7.png" alt="Windows Store Link" class="winstore" width = 200 height = 72></a><br><img src="/2024/04/29/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/image-202404160810493.png"><br><br><br><br></li>
 </ul>
-<p><img src="/2023/04/16/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/image-202404160810493.png"></p>
 <h2 id="Windows-Terminal"><a href="#Windows-Terminal" class="headerlink" title="Windows Terminal"></a>Windows Terminal</h2><p>微软开发的一个现代终端软件，用来替代老旧的控制台终端。Windows Terminal 的特点是颜值高，而且已经是 Windows 11 的默认终端了，如果你还在使用 Windows 10，也可以在应用商店中搜索并安装 Windows Termial</p>
-<p><img src="/2023/04/16/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/image-202404160812036.png"></p>
+<p><img src="/2024/04/29/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/image-202404160812036.png"><br><br><br><br></p>
 <h2 id="MesloLGM-Nerd-Font-字体"><a href="#MesloLGM-Nerd-Font-字体" class="headerlink" title="MesloLGM Nerd Font 字体"></a>MesloLGM Nerd Font 字体</h2><p><a target="_blank" rel="noopener" href="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Meslo.zip">点此下载</a></p>
 <p>下载完成后解压，全选右键点击安装即可自动安装。</p>
-<p>使用默认的字体会导致特殊字符无法显示：<br><img src="/2023/04/16/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/image-202404151452126.png"></p>
+<p>使用默认的字体会导致特殊字符无法显示：<br><img src="/2024/04/29/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/image-202404151452126.png"><br><br><br><br></p>
 <h2 id="Powershell-7"><a href="#Powershell-7" class="headerlink" title="Powershell 7"></a>Powershell 7</h2><ul>
 <li>简而言之，Powershell 7 是 Powershell 的升级版</li>
 <li>可与Powershel旧版共存，新版为pwsh，与旧版的powershell区分开</li>
 </ul>
 <p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/powershell/">PowerShell 文档 - PowerShell</a></p>
 <ul>
-<li>下载链接：<br><a target="_blank" rel="noopener" href="https://github.com/PowerShell/PowerShell/releases/download/v7.4.2/PowerShell-7.4.2-win-x64.msi">https://github.com/PowerShell/PowerShell/releases/download/v7.4.2/PowerShell-7.4.2-win-x64.msi</a><br>运行安装程序，一路下一步即可</li>
+<li>下载链接：<br><a target="_blank" rel="noopener" href="https://github.com/PowerShell/PowerShell/releases/download/v7.4.2/PowerShell-7.4.2-win-x64.msi">https://github.com/PowerShell/PowerShell/releases/download/v7.4.2/PowerShell-7.4.2-win-x64.msi</a><br>运行安装程序，一路下一步即可<br><br><br><br><br></li>
 </ul>
 <h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><h2 id="Windows-Terminal-选项"><a href="#Windows-Terminal-选项" class="headerlink" title="Windows Terminal 选项"></a>Windows Terminal 选项</h2><p>然后再来配置一下 Windows Terminal，点击下拉菜单选择设置打开设置标签页，然后依次修改以下选项：</p>
 <ul>
@@ -530,7 +531,7 @@
 <li>配置文件默认值 -&gt; 外观 -&gt; 背景，选择自己的图片，拉伸模式选择均匀填充，不透明度设置为12%</li>
 </ul>
 <p>这样一来，Windows Terminal 的配置就算完成了。当然如果你对自带的配色方案不满意，也可以从网络上寻找一些好看的配色方案， 其他设置也可以根据自己喜好进行修改，这里就不多做介绍了。</p>
-<p><img src="/2023/04/16/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/%E9%85%8D%E7%BD%AE%E6%BC%94%E7%A4%BA.gif"></p>
+<p><img src="/2024/04/29/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/%E9%85%8D%E7%BD%AE%E6%BC%94%E7%A4%BA.gif"><br><br><br><br></p>
 <h2 id="On-My-Posh和主题"><a href="#On-My-Posh和主题" class="headerlink" title="On-My-Posh和主题"></a>On-My-Posh和主题</h2><blockquote>
 <p>主题预览<a target="_blank" rel="noopener" href="https://ohmyposh.dev/docs/themes">Themes | Oh My Posh</a></p>
 </blockquote>
@@ -552,9 +553,9 @@
     
         <div class="license-wrapper">
             <p>原文作者：<a href="https://blog.ahao.space">Ahao</a>
-            <p>原文链接：<a href="https://blog.ahao.space/2023/04/16/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/">https://blog.ahao.space/2023/04/16/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/</a>
-            <p>发表日期：<a href="https://blog.ahao.space/2023/04/16/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/">April 16th 2023, 7:42:40 am</a>
-            <p>更新日期：<a href="https://blog.ahao.space/2023/04/16/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/">April 29th 2024, 6:42:58 pm</a>
+            <p>原文链接：<a href="https://blog.ahao.space/2024/04/29/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/">https://blog.ahao.space/2024/04/29/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/</a>
+            <p>发表日期：<a href="https://blog.ahao.space/2024/04/29/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/">April 29th 2024, 7:42:40 am</a>
+            <p>更新日期：<a href="https://blog.ahao.space/2024/04/29/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/">April 29th 2024, 8:05:29 pm</a>
             <p>版权声明：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -562,17 +563,12 @@
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href="/2023/08/10/TrueNAS_Scale%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E5%9C%9F/" title="TrueNAS Scale 从入门到入土">
-                    <div class="nextTitle">TrueNAS Scale 从入门到入土</div>
-                </a>
-            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href="/2023/04/12/Computer_%20Science%20--%20%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%BA%93/" title="Computer Science -- 基础知识库">
-                    <div class="prevTitle">Computer Science -- 基础知识库</div>
+                <a href="/2024/04/23/%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3npm_install%E5%8D%A1%E5%9C%A8%E2%80%9Csill-idealTree-buildDeps%E2%80%9C%E7%9A%84%E9%97%AE%E9%A2%98/" title="如何解决npm install卡在“sill idealTree buildDeps“的问题">
+                    <div class="prevTitle">如何解决npm install卡在“sill idealTree buildDeps“的问题</div>
                 </a>
             
         </li>
@@ -794,6 +790,8 @@
         
         
         
+        
+        
     
     
     
@@ -814,6 +812,12 @@
             <div class="archive-year"> 2024 </div>
             <ul class="year-list">
             
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/29</span>
+            <a class="archive-post-title" href="/2024/04/29/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/">使用Oh-My-Posh配置和美化PowerShell终端</a>
+        </li>
+    
         
         <li class="archive-post-item">
             <span class="archive-post-date">04/23</span>
@@ -845,12 +849,6 @@
         <li class="archive-post-item">
             <span class="archive-post-date">08/10</span>
             <a class="archive-post-title" href="/2023/08/10/TrueNAS_Scale%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E5%9C%9F/">TrueNAS Scale 从入门到入土</a>
-        </li>
-    
-        
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/16</span>
-            <a class="archive-post-title" href="/2023/04/16/%E4%BD%BF%E7%94%A8Oh-My-Posh%E9%85%8D%E7%BD%AE%E5%92%8C%E7%BE%8E%E5%8C%96PowerShell%E7%BB%88%E7%AB%AF/">使用Oh-My-Posh配置和美化PowerShell终端</a>
         </li>
     
         
